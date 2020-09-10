@@ -1,0 +1,132 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}管理员列表-新闻管理系统{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ url_for('.user_add') }}" class="btn btn-primary">新增管理员</a>
+        </div>
+        <div class="col-md-6">
+            <form action="{{ url_for('.user_index') }}" class="form-inline pull-right">
+                <input type="text" name="search" class="form-control" placeholder="请输入账号">
+                <input type="submit" value="查询" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+    <div class="row mt20">
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>管理员ID</th>
+                  <th>管理员账号</th>
+                  <th>管理员状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if users.total  %}
+                {% for item in users.items %}
+                <tr>
+                  <th scope="row">{{ item.id }}</th>
+                  <td>{{ item.username }}</td>
+                  <td>
+                      {% if item.is_valid %}
+                      <span class="text-primary">开启</span>
+                      {% else %}
+                      <span class="text-danger">禁用</span>
+                      {% endif %}
+                  </td>
+                  <td>
+                      <a href="{{ url_for('.user_edit',pk=item.id) }}" class="btn btn-primary btn-sm">编辑</a>
+                      <button data-toggle="modal" data-target="#myModal" class="btn btn-danger btn-sm" data-url="{{ url_for('.user_delete', pk=item.id) }}">删除</button>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="4">暂无结果！</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+        </div>
+        {% if users.total %}
+        <div class="col-md-12">
+            <nav aria-label="...">
+              <ul class="pagination">
+                <!--  上一页  -->
+                {% if users.has_prev %}
+                  <li>
+                    <a href="{{ url_for('.user_index', page=users.prev_num) }}{{ condition }}" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="disabled">
+                    <a href="javascript:;" aria-label="Previous"><span aria-hidden="true">«</span></a>
+                  </li>
+                {% endif %}
+
+                <!-- 页码  -->
+                {% for page in users.iter_pages() %}
+                  {% if users.page == page %}
+                    <li class="active"><a href="javascript:;">{{ page }}</a></li>
+                  {% else %}
+                    <li><a href="{{ url_for('.user_index', page=page) }}{{ condition }}">{{ page }}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                <!--  下一页  -->
+                {% if users.has_next %}
+                  <li>
+                    <a href="{{ url_for('.user_index', page=users.next_num) }}{{ condition }}" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="disabled">
+                    <a href="javascript:;" aria-label="Next"><span aria-hidden="true">»</span></a>
+                  </li>
+                {% endif %}
+             </ul>
+           </nav>
+        </div>
+        {% endif %}
+    </div>
+
+    {# 删除提示框 #}
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">删除提示</h4>
+              </div>
+              <div class="modal-body">
+                <p>你确定删除该条数据吗？</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <a href="#" class="btn btn-primary" id="J_deleteBtn">确定</a>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endblock %}
+
+{% block otherjs %}
+
+<script>
+    {#给所有的删除按钮元素设置点击事件#}
+    $('button.btn-danger').on('click', function(){
+        {#alert($(this).attr('data-url'))#}
+        {#获取当前点击按钮元素的data-url属性的属性值#}
+        var url = $(this).attr('data-url')
+        {#给删除的确定按钮设置href属性的属性值#}
+        $('#J_deleteBtn').attr('href', url)
+    })
+</script>
+
+{% endblock %}

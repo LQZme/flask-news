@@ -1,0 +1,113 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}新增新闻-新闻管理系统{% endblock %}
+
+{% block content %}
+    <form class="form-horizontal" role="form" method='POST' novalidate>
+      <div class="form-group {% if form.title.errors %} has-error {% endif %}">
+          <label class="col-sm-2 control-label">{{ form.title.label }}</label>
+          <div class="col-sm-10">
+              {{ form.title }}
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label"></label>
+          <div class="col-sm-10">
+              {% for error in form.title.errors %}
+              <p class="text-danger">{{ error }}</p>
+              {% endfor %}
+          </div>
+      </div>
+      <div class="form-group {% if form.content.errors %} has-error {% endif %}">
+          <label class="col-sm-2 control-label">{{ form.content.label }}</label>
+          <div class="col-sm-10">
+            {#  {{ form.content }}#}
+              <script type="text/plain" id="content" name="content"></script>
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label"></label>
+          <div class="col-sm-10">
+              {% for error in form.content.errors %}
+              <p class="text-danger">{{ error }}</p>
+              {% endfor %}
+          </div>
+      </div>
+      <div class="form-group {% if form.types.errors %} has-error {% endif %}">
+          <label class="col-sm-2 control-label">{{ form.types.label }}</label>
+          <div class="col-sm-10">
+              {{ form.types }}
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label"></label>
+          <div class="col-sm-10">
+              {% for error in form.types.errors %}
+              <p class="text-danger">{{ error }}</p>
+              {% endfor %}
+          </div>
+      </div>
+      <div class="form-group {% if form.img_url.errors %} has-error {% endif %}">
+          <label class="col-sm-2 control-label">{{ form.img_url.label }}</label>
+          <div class="col-sm-10">
+              {{ form.img_url }}
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label"></label>
+          <div class="col-sm-10">
+              {% for error in form.img_url.errors %}
+              <p class="text-danger">{{ error }}</p>
+              {% endfor %}
+          </div>
+      </div>
+      <div class="form-group {% if form.author.errors %} has-error {% endif %}">
+          <label class="col-sm-2 control-label">{{ form.author.label }}</label>
+          <div class="col-sm-10">
+              {{ form.author }}
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label"></label>
+          <div class="col-sm-10">
+              {% for error in form.author.errors %}
+              <p class="text-danger">{{ error }}</p>
+              {% endfor %}
+          </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+            {{ form.is_recommend }} {{ form.is_recommend.label }}
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+            {{ form.is_valid }} {{ form.is_valid.label }}
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+            {{ form.hidden_tag() }}
+            {{ form.submit }}
+        </div>
+      </div>
+    </form>
+
+{% endblock %}
+
+{% block otherjs %}
+    <script src="{{ url_for('static', filename='ueditor/ueditor.config.js') }}"></script>
+    <script src="{{ url_for('static', filename='ueditor/ueditor.all.js') }}"></script>
+    <script>
+         var ue = UE.getEditor('content',{
+             {#定制工具栏图标#}
+             toolbars: [
+                  ['fullscreen', 'source', 'undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+             ],
+             initialFrameHeight: 400
+         });
+    </script>
+{% endblock %}

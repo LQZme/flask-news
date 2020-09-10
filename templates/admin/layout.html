@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title %} 后台-新闻管理系统 {% endblock %}
+        </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/style.css') }}">
+        {% block othercss %}{% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-default">
+              <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                          data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="{{ url_for('.index') }}">新闻管理系统</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<!--                  <ul class="nav navbar-nav">-->
+<!--                    <li><a href="{{ url_for('.article_index') }}">新闻管理</a></li>-->
+<!--                    <li><a href="{{ url_for('.user_index') }}">管理员管理</a></li>-->
+<!--                  </ul>-->
+                  <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('home.index') }}" target="_blank">前台首页</a></li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                         aria-haspopup="true" aria-expanded="false">{{ session.username }}
+                          <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ url_for('.logout') }}">
+                                退出
+                            </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">修改密码</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div><!-- /.navbar-collapse -->
+              </div><!-- /.container-fluid -->
+            </nav>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="list-group">
+                      <a href="#" class="list-group-item active">常用管理</a>
+                      <a href="{{ url_for('.article_index') }}" class="list-group-item">新闻管理</a>
+                      <a href="{{ url_for('.user_index') }}" class="list-group-item">管理员管理</a>
+                    </div>
+                </div>
+                <div class="col-md-10">
+
+                    <!--flash消息提示开始-->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                    <div class="alert {% if category=='error' %} alert-danger {% else %} alert-success {% endif %} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      <strong>提示：</strong> {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endwith %}
+                    <!--flash消息提示结束-->
+
+                    {% block content %}
+                    <!--  主体内容  -->
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="row">
+                <p class="text-center">©2020 Powered by <a href="http://www.moocba.com">山西智汇同创</a></p>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/jquery.1.10.2.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+        {% block otherjs %}
+
+        {% endblock %}
+    </body>
+</html>

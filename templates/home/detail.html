@@ -1,0 +1,16 @@
+{% extends 'home/layout.html' %}
+{% block head %}
+<title>新闻详情页</title>
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <h2>{{ news.title }}</h2>
+        <p>
+            {{ news.created_at }}
+            <strong>来源：</strong>{{ news.author }}
+        </p>
+        <p>{{ news.content | safe }}</p>
+    </div>
+</div>
+{% endblock %}

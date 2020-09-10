@@ -1,0 +1,21 @@
+{% extends 'home/layout.html' %}
+{% block head %}
+<title>新闻推荐页</title>
+{% endblock %}
+{% block content %}
+<ol class="breadcrumb">
+    <li><a href="{{ url_for('.index') }}">Home</a></li>
+    <li class="active">推荐</li>
+</ol>
+{% for item in news %}
+<div class="list-news">
+    <div class="img-content">
+        <img src="{{ item.img_url }}" alt="图片">
+    </div>
+    <div class="right-content">
+        <p><a href="{{ url_for('.detail', pk=item.id) }}" >{{ item.title }}</a></p>
+        <small>{{ item.created_at }}</small>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
